@@ -5,7 +5,7 @@ this bash file help you to convert all your images (jpg, png) to webp.
 
 dependancy for this file is `cwebp`
 ```bash
-sudo apt install cwebp
+sudo apt install webp
 ```
 
 run this `sh file` inside the folder where all yours images are located then this will convert all yours images and saved in webp folder

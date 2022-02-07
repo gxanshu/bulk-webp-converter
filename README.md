@@ -7,6 +7,6 @@ dependancy for this file is `cwebp`
 ```bash
 sudo apt install webp
 ```
-otherwise you can download this package from (here)[https://developers.google.com/speed/webp#webp_converter_download]
+otherwise you can download this package from [here](https://developers.google.com/speed/webp#webp_converter_download)
 
 run this `sh file` inside the folder where all yours images are located then this will convert all yours images and saved in webp folder

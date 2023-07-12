@@ -1,25 +1,33 @@
 #!/bin/bash
 
-# converting JPEG images
-find $1 -type f -and \( -iname "*.jpg" -o -iname "*.jpeg" \) \
--exec bash -c '
-webp_path=$(sed 's/\.[^.]*$/.webp/' <<< "$0");
-if [ ! -f "$webp_path" ]; then 
-  cwebp -quiet -q 75 "$0" -o "$webp_path"; # change 75 by the value that you want set as quality
-fi;' {} \;
+# Function to convert PNG files to WebP
+convert_to_webp() {
+  local input="$1"
+  local output="${input%.png}.webp"
+  
+  # Convert PNG to WebP
+  cwebp "$input" -q 10 -o "$output"
+  
+  echo "Converted: $input"
+}
 
-# converting PNG images
-find $1 -type f -and -iname "*.png" \
--exec bash -c '
-webp_path=$(sed 's/\.[^.]*$/.webp/' <<< "$0");
-if [ ! -f "$webp_path" ]; then 
-  cwebp -quiet -lossless "$0" -o "$webp_path";
-fi;' {} \;
+# Recursive function to traverse directories
+traverse_directories() {
+  local dir="$1"
+  
+  # Iterate over all files and directories in the given directory
+  for file in "$dir"/*; do
+    if [[ -d "$file" ]]; then
+      # Directory found, recursively traverse it
+      traverse_directories "$file"
+    elif [[ -f "$file" && "${file##*.}" == "png" ]]; then
+      # PNG file found, convert it to WebP
+      convert_to_webp "$file"
+    fi
+  done
+}
 
-if [ -d "$home/Desktop/claybotik/webp" ] 
-then
-    mv *.webp ./webp
-else
-    mkdir webp
-    mv *.webp ./webp
-fi
+# Start traversal from the current directory (change this if needed)
+traverse_directories "."
+
+echo "Conversion complete."
